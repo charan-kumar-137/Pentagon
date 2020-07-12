@@ -17,27 +17,27 @@
 
     <div class="container my-2">
         <!-- Navbar  -->
-        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light">
-            <a class="navbar-brand" href="#">Pentagon</a>
-            <a class="navbar-brand" href="#">Profile</a>
-            <a class="navbar-brand" href="#">Chat</a>
+        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
+            <a class="navbar-brand" href="/">Pentagon</a>
+            <a class="navbar-brand" href="profile">Profile</a>
+            <a class="navbar-brand" href="chat">Chat</a>
         </nav>
     </div>
 
     <!-- Add Post Form -->
     <div class="container">
         <div class="d-flex justify-content-center my-4">
-            <div class="card px-4 py-4" style="width:50rem;">
+            <div class="card px-4 py-4 border border-dark" style="width:50rem;">
                 <form action="handle_added_post" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <div class="form-group">
                         <label>Upload Your Pic</label>
-                        <input type="file" accept="image/*" class="form-control-file" name="image" required>
+                        <input type="file" accept="image/*" class="form-control-file border border-secondary" name="image" required>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" rows="3" name="description"></textarea>
+                        <textarea class="form-control border border-secondary" rows="3" name="description"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-secondary">Submit</button>
                 </form>
             </div>
         </div>

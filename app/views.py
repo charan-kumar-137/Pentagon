@@ -36,7 +36,7 @@ def handle_added_post(request):
         )
         post.save()
 
-        return HttpResponse('success post added')
+        return redirect('/')
 
     return HttpResponse('Post add fail')
 
@@ -58,5 +58,35 @@ def handle_added_comment(request):
         post.save()
 
         return redirect('home')
+
+    return redirect('home')
+
+
+def handle_added_like(request):
+    if request.method == 'POST':
+        post_id = request.POST.get('post_id')
+        post_obj = models.Post.objects.get(post_id=post_id)
+
+        try:
+            like_obj = models.Like.objects.get(post_id=post_id,username=request.user)
+            print('1')
+            if not like_obj.liked:
+                post_obj.total_likes += 1
+                post_obj.save()
+                print('2')
+            print('3')
+            return redirect('home')
+        except:
+            print('4')
+            like = models.Like(
+                post_id=post_id,
+                username=request.user,
+                liked=True
+            )
+            like.save()
+            print('5')
+            post_obj.total_likes += 1
+            post_obj.save()
+            return redirect('home')
 
     return redirect('home')

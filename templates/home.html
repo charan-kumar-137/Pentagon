@@ -17,16 +17,16 @@
 
     <div class="container my-2">
         <!-- Navbar  -->
-        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light">
-            <a class="navbar-brand" href="#">Pentagon</a>
-            <a class="navbar-brand" href="#">Profile</a>
-            <a class="navbar-brand" href="#">Chat</a>
+        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
+            <a class="navbar-brand" href="/">Pentagon</a>
+            <a class="navbar-brand" href="profile">Profile</a>
+            <a class="navbar-brand" href="chat">Chat</a>
         </nav>
     </div>
 
     <!-- Add Post -->
     <div class="d-flex justify-content-center my-4">
-        <div class="card text-center bg-secondary" style="width:50rem; height:2rem;">
+        <div class="card text-center bg-secondary border border-dark" style="width:50rem; height:2rem;">
             <a class="text-light" href="add_post">Add Post</a>
         </div>
     </div>
@@ -36,58 +36,62 @@
     <div class="container my-4">
         <div class="d-flex justify-content-center">
             <!-- Card for displaying image,description -->
-            <div class="card" style="width:50rem">
+            <div class="card border border-dark" style="width:50rem">
                 <img src="{{ post.image.url }}" class="card-img-top" height="400" alt="Error occured">
                 <div class="card-body">
-                    <p class="card-title">
-
-
-
-                    </p>
                     <div class="card-title"><b>{{ post.username }}</b></div>
                     <p>{{ post.description }}</p>
-                    <hr>
-                    <a href="#" class="card-link" id="like_button" style="color:black;">
-                        <i class="far fa-thumbs-up"></i>
-                        {{ post.total_likes }}
-                    </a>
-                    <a href="#" class="card-link" id="comment_button" style="color:black;">
-                        <i class="far fa-comment"></i>
-                        {{ post.total_comments }}
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- Add comment -->
-        <div class="d-flex justify-content-center" id="add_comment">
-            <div class="card" style="width:50rem;">
-                <div class="card-body px-4">
+                    <ul class="list-group">
 
-                    <form class="form-inline px-4" action="handle_added_comment" method="post">{% csrf_token %}
-                        <input type="text" class="form-control px-4" placeholder="add your comment" name="comment">
-                        <input type="text" class="form-control px-4" hidden value="{{post.post_id}}" name="post_id">
-                        <button type="submit" class="btn btn-primary my-1 px-4">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <form action="handle_added_like" class="form-inline px-4" method="post"> {% csrf_token %}
+                                <input type="text" name="post_id" hidden value="{{post.post_id}}">
+                                <button type="submit" class="btn btn-secondary my-1 px-4"> Add Like </button>
+                            </form>
+                            <div class="d-flex justify-content-end ">
+                                <i class="far fa-thumbs-up"></i>
+                                <span class="badge badge-secondary badge-pill">
+                                    {{ post.total_likes }}
+                                </span>
+                            </div>
+                        </li>
 
-        {% for comment in comments %}
-        <!-- Comments -->
-        <div class="d-flex justify-content-center" id="comments">
-            {% if comment.post_id == post.post_id %}
-            <div class="card" style="width:50rem;">
-                <div class="card-body">
-                    <div class="">
-                        <b>{{ comment.username }}</b>
-                        {{ comment.description }}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <form class="form-inline px-4" action="handle_added_comment" method="post">{% csrf_token %}
+                                <input type="text" class="form-control px-4 border border-secondary" placeholder="Type your comment" name="comment">
+                                <input type="text" class="form-control px-4" hidden value="{{post.post_id}}" name="post_id">
+                                <button type="submit" class="btn btn-secondary my-1 px-4"> Add Comment </button>
+                            </form>
+                            <div class="d-flex justify-content-end">
+                                <i class="far fa-comment"></i>
+                                <span class="badge badge-secondary badge-pill">
+                                    {{ post.total_comments }}
+                                </span>
+                            </div>
+                        </li>
+
+                    </ul>
+                    {% for comment in comments %}
+                    <!-- Comments -->
+                    <div class="d-flex justify-content-center" id="comments">
+                        {% if comment.post_id == post.post_id %}
+                        <div class="card" style="width:50rem;">
+                            <div class="card-body">
+                                <div class="">
+                                    <b>{{ comment.username }}</b>
+                                    {{ comment.description }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
+                    {% endfor %}
+
                 </div>
             </div>
-            {% endif %}
         </div>
-        {% endfor %}
+
     </div>
     {% endfor %}
 

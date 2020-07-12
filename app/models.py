@@ -23,3 +23,13 @@ class Comment(models.Model):
 
     def __int__(self):
         return self.comment_id
+
+
+class Like(models.Model):
+    like_id = models.AutoField(primary_key=True)
+    post_id = models.IntegerField()
+    username = models.CharField(max_length=30)
+    liked = models.BooleanField(default=False)
+
+    def __int__(self):
+        return self.like_id
