@@ -5,54 +5,77 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <title>Pentagon</title>
 </head>
 
 <body>
     <!-- All the contents are added inside the container -->
-    <div class="container">
-        <!-- Navbar  -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Pentagon</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Profile <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Chat <span class="sr-only">(current)</span></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
 
-        <!-- Post -->
-        <div class="d-flex justify-content-center my-5 px-3">
+    <div class="container my-2">
+        <!-- Navbar  -->
+        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light">
+            <a class="navbar-brand" href="#">Pentagon</a>
+            <a class="navbar-brand" href="#">Profile</a>
+            <a class="navbar-brand" href="#">Chat</a>
+        </nav>
+    </div>
+
+    {% for post in posts %}
+    <!-- Post -->
+    <div class="container my-4">
+        <div class="d-flex justify-content-center">
             <!-- Card for displaying image,description -->
-            <div class="card" style="width:50rem" >
-                <img src="https://source.unsplash.com/random" class="card-img-top" height="400" alt="...">
+            <div class="card" style="width:50rem">
+                <img src="{{ post.image.url }}" class="card-img-top" height="400" alt="Error occured">
                 <div class="card-body">
-                    <p class="card-title">Test post description</p>
+                    <p class="card-title">
+
+
+
+                    </p>
+                    <div class="card-title"><b>{{ post.username }}</b></div>
+                    <p>{{ post.description }}</p>
+                    <p><i>{{ post.date }}</i></p>
+                    <hr>
+                    <a href="#" class="card-link" style="color:black;"><i class="far fa-thumbs-up"></i></a>
+                    <a href="#" class="card-link" style="color:black;"><i class="far fa-comment"></i></a>
                 </div>
             </div>
-            <!-- Card for displaying vertical actions -->
-            <div class="card">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="#" class="btn btn-primary">Like</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#" class="btn btn-primary">Comment</a>
-                    </li>
-                </ul>
+        </div>
+        <!-- Add comment -->
+        <div class="d-flex justify-content-center">
+            <div class="card" style="width:50rem;">
+                <div class="card-body">
+
+                    <form class="form-inline">
+                        <input type="text" class="form-control" placeholder="add your comment">
+
+                        <button type="submit" class="btn btn-primary my-1">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
-
+        <!-- Comments -->
+        <div class="d-flex justify-content-center" hidden>
+            <div class="card" style="width:50rem;">
+                <div class="card-body">
+                    <div class="">
+                        user : adadad adadad adadad adadad adad
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+
+
+
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

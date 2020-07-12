@@ -1,11 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from . import models
 
 
 # Create your views here.
 
 def home(request):
-    return render(request,'home.html')
+    post = models.Post.objects.all()
+    context = {'posts': post}
+    return render(request, 'home.html', context=context)
 
 
 def profile(request):
