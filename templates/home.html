@@ -40,15 +40,20 @@
                     </p>
                     <div class="card-title"><b>{{ post.username }}</b></div>
                     <p>{{ post.description }}</p>
-                    <p><i>{{ post.date }}</i></p>
                     <hr>
-                    <a href="#" class="card-link" style="color:black;"><i class="far fa-thumbs-up"></i></a>
-                    <a href="#" class="card-link" style="color:black;"><i class="far fa-comment"></i></a>
+                    <a href="#" class="card-link" id="like_button" style="color:black;">
+                        <i class="far fa-thumbs-up"></i>
+                        {{ post.total_likes }}
+                    </a>
+                    <a href="#" class="card-link" id="comment_button" style="color:black;">
+                        <i class="far fa-comment"></i>
+                        {{ post.total_comments }}
+                    </a>
                 </div>
             </div>
         </div>
         <!-- Add comment -->
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center" id="add_comment">
             <div class="card" style="width:50rem;">
                 <div class="card-body">
 
@@ -61,7 +66,7 @@
             </div>
         </div>
         <!-- Comments -->
-        <div class="d-flex justify-content-center" hidden>
+        <div class="d-flex justify-content-center" id="comments">
             <div class="card" style="width:50rem;">
                 <div class="card-body">
                     <div class="">

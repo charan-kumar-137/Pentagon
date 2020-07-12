@@ -10,7 +10,7 @@ class Post(models.Model):
     description = models.TextField()
     total_likes = models.IntegerField(default=0)
     total_comments = models.IntegerField(default=0)
-    date = models.DateField(auto_created=True)
+
 
     def __int__(self):
         return self.post_id
