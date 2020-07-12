@@ -14,7 +14,6 @@
 </head>
 
 <body>
-    <!-- All the contents are added inside the container -->
 
     <div class="container my-2">
         <!-- Navbar  -->
@@ -23,6 +22,13 @@
             <a class="navbar-brand" href="#">Profile</a>
             <a class="navbar-brand" href="#">Chat</a>
         </nav>
+    </div>
+
+    <!-- Add Post -->
+    <div class="d-flex justify-content-center my-4">
+        <div class="card text-center bg-secondary" style="width:50rem; height:2rem;">
+            <a class="text-light" href="add_post">Add Post</a>
+        </div>
     </div>
 
     {% for post in posts %}
@@ -52,12 +58,13 @@
                 </div>
             </div>
         </div>
+
         <!-- Add comment -->
         <div class="d-flex justify-content-center" id="add_comment">
             <div class="card" style="width:50rem;">
                 <div class="card-body">
 
-                    <form class="form-inline">
+                    <form class="form-inline" action="handle_added_comment" method="post">{% csrf_token %}
                         <input type="text" class="form-control" placeholder="add your comment">
 
                         <button type="submit" class="btn btn-primary my-1">Submit</button>
@@ -65,16 +72,22 @@
                 </div>
             </div>
         </div>
+
+        {% for comment in comments %}
         <!-- Comments -->
         <div class="d-flex justify-content-center" id="comments">
+            {% if comment.post_id == post.post_id %}
             <div class="card" style="width:50rem;">
                 <div class="card-body">
                     <div class="">
-                        user : adadad adadad adadad adadad adad
+                        <b>{{ comment.username }}</b>
+                        {{ comment.description }}
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
+        {% endfor %}
     </div>
     {% endfor %}
 
