@@ -62,12 +62,12 @@
         <!-- Add comment -->
         <div class="d-flex justify-content-center" id="add_comment">
             <div class="card" style="width:50rem;">
-                <div class="card-body">
+                <div class="card-body px-4">
 
-                    <form class="form-inline" action="handle_added_comment" method="post">{% csrf_token %}
-                        <input type="text" class="form-control" placeholder="add your comment">
-
-                        <button type="submit" class="btn btn-primary my-1">Submit</button>
+                    <form class="form-inline px-4" action="handle_added_comment" method="post">{% csrf_token %}
+                        <input type="text" class="form-control px-4" placeholder="add your comment" name="comment">
+                        <input type="text" class="form-control px-4" hidden value="{{post.post_id}}" name="post_id">
+                        <button type="submit" class="btn btn-primary my-1 px-4">Submit</button>
                     </form>
                 </div>
             </div>

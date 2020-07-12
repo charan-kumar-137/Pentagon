@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . import models
 
 
@@ -8,7 +8,7 @@ from . import models
 def home(request):
     post = models.Post.objects.all()
     comments = models.Comment.objects.all()
-    context = {'posts': post,'comments':comments}
+    context = {'posts': post, 'comments': comments}
     return render(request, 'home.html', context=context)
 
 
@@ -21,7 +21,7 @@ def chat(request):
 
 
 def add_post(request):
-    return render(request,'add_post.html')
+    return render(request, 'add_post.html')
 
 
 def handle_added_post(request):
@@ -39,3 +39,24 @@ def handle_added_post(request):
         return HttpResponse('success post added')
 
     return HttpResponse('Post add fail')
+
+
+def handle_added_comment(request):
+    if request.method == 'POST':
+        comment = request.POST.get('comment', '')
+        post_id = request.POST.get('post_id', '')
+
+        comment_obj = models.Comment(
+            username=request.user,
+            post_id=post_id,
+            description=comment
+        )
+        comment_obj.save()
+
+        post = models.Post.objects.get(post_id=post_id)
+        post.total_comments += 1
+        post.save()
+
+        return redirect('home')
+
+    return redirect('home')
