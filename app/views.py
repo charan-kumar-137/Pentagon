@@ -1,15 +1,21 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+import django.contrib.auth as djauth
+
 from . import models
 
 
 # Create your views here.
 
 def home(request):
-    post = models.Post.objects.all()
-    comments = models.Comment.objects.all()
-    context = {'posts': post, 'comments': comments}
-    return render(request, 'home.html', context=context)
+    if request.user.is_authenticated:
+        post = models.Post.objects.all()
+        comments = models.Comment.objects.all()
+        context = {'posts': post, 'comments': comments}
+        return render(request, 'home.html', context=context)
+
+    return redirect('login')
 
 
 def profile(request):
@@ -18,6 +24,28 @@ def profile(request):
 
 def chat(request):
     return HttpResponse('Chat Page')
+
+
+def login(request):
+    if not request.user.is_authenticated:
+        return render(request, 'login.html')
+
+    return redirect('/')
+
+
+def signup(request):
+    if not request.user.is_authenticated:
+        return render(request, 'signup.html')
+
+    return redirect('/')
+
+
+def logout(request):
+    if request.user.is_authenticated:
+        djauth.logout(request)
+        return redirect('/')
+
+    return redirect('/')
 
 
 def add_post(request):
@@ -68,25 +96,61 @@ def handle_added_like(request):
         post_obj = models.Post.objects.get(post_id=post_id)
 
         try:
-            like_obj = models.Like.objects.get(post_id=post_id,username=request.user)
-            print('1')
+            like_obj = models.Like.objects.get(post_id=post_id, username=request.user)
             if not like_obj.liked:
                 post_obj.total_likes += 1
                 post_obj.save()
-                print('2')
-            print('3')
+
             return redirect('home')
         except:
-            print('4')
             like = models.Like(
                 post_id=post_id,
                 username=request.user,
                 liked=True
             )
             like.save()
-            print('5')
+
             post_obj.total_likes += 1
             post_obj.save()
             return redirect('home')
 
     return redirect('home')
+
+
+def handle_user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        user = djauth.authenticate(request, username=username, password=password)
+        if user:
+            djauth.login(request, user)
+
+            return redirect('/')
+
+    return redirect('login')
+
+
+def handle_user_signup(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        password = request.POST.get('password', '')
+
+        try:
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+            user.first_name = name
+            user.save()
+
+            user = djauth.authenticate(request, username=username, password=password)
+            djauth.login(request, user=user)
+            return redirect('/')
+        except:
+            return redirect('signup')
+
+    return redirect('signup')
