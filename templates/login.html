@@ -18,9 +18,9 @@
     <div class="container my-2">
         <!-- Navbar  -->
         <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
-            <a class="navbar-brand" href="/">Pentagon</a>
-            <a class="navbar-brand" href="profile">Profile</a>
-            <a class="navbar-brand" href="chat">Chat</a>
+            {% for href,nav in navs %}
+            <a class="navbar-brand" href="{{ href }}">{{ nav }}</a>
+            {% endfor %}
         </nav>
     </div>
 

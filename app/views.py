@@ -12,7 +12,13 @@ def home(request):
     if request.user.is_authenticated:
         post = models.Post.objects.all()
         comments = models.Comment.objects.all()
-        context = {'posts': post, 'comments': comments}
+        nav = [
+            ['/', 'Pentagon'],
+            ['profile', 'Profile'],
+            ['chat', 'Chat'],
+            ['logout', 'Logout']
+        ]
+        context = {'posts': post, 'comments': comments, 'navs': nav, 'user': request.user}
         return render(request, 'home.html', context=context)
 
     return redirect('login')
@@ -28,14 +34,20 @@ def chat(request):
 
 def login(request):
     if not request.user.is_authenticated:
-        return render(request, 'login.html')
+        nav = [
+            ['/', 'Pentagon']
+        ]
+        return render(request, 'login.html', context={'navs': nav})
 
     return redirect('/')
 
 
 def signup(request):
     if not request.user.is_authenticated:
-        return render(request, 'signup.html')
+        nav = [
+            ['/', 'Pentagon']
+        ]
+        return render(request, 'signup.html', context={'navs': nav})
 
     return redirect('/')
 
@@ -49,7 +61,15 @@ def logout(request):
 
 
 def add_post(request):
-    return render(request, 'add_post.html')
+    if request.user.is_authenticated:
+        nav = [
+            ['/', 'Pentagon'],
+            ['profile', 'Profile'],
+            ['chat', 'Chat']
+        ]
+        return render(request, 'add_post.html', context={'navs': nav})
+
+    return redirect('/')
 
 
 def handle_added_post(request):

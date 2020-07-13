@@ -10,7 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-    <title>Pentagon</title>
+    <title>Pentagon | {{ user }}</title>
 </head>
 
 <body>
@@ -18,9 +18,9 @@
     <div class="container my-2">
         <!-- Navbar  -->
         <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
-            <a class="navbar-brand" href="/">Pentagon</a>
-            <a class="navbar-brand" href="profile">Profile</a>
-            <a class="navbar-brand" href="chat">Chat</a>
+            {% for href,nav in navs %}
+            <a class="navbar-brand" href="{{ href }}">{{ nav }}</a>
+            {% endfor %}
         </nav>
     </div>
 
