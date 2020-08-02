@@ -11,7 +11,7 @@ from . import models
 def home(request):
     if request.user.is_authenticated:
         post = models.Post.objects.all()
-        comments = models.Comment.objects.all()
+        comments = models.PostComment.objects.all()
         nav = [
             ['/', 'Pentagon'],
             ['profile', 'Profile'],
@@ -25,11 +25,31 @@ def home(request):
 
 
 def profile(request):
-    return HttpResponse('Profile Page')
+    if request.user.is_authenticated:
+        nav = [
+            ['/', 'Pentagon'],
+            ['profile', 'Profile'],
+            ['chat', 'Chat'],
+            ['logout', 'Logout']
+        ]
+        context = {'navs': nav, 'user': request.user}
+        return render(request, 'profile.html', context=context)
+
+    return redirect('login')
 
 
 def chat(request):
-    return HttpResponse('Chat Page')
+    if request.user.is_authenticated:
+        nav = [
+            ['/', 'Pentagon'],
+            ['profile', 'Profile'],
+            ['chat', 'Chat'],
+            ['logout', 'Logout']
+        ]
+        context = {'navs': nav, 'user': request.user}
+        return render(request, 'chat.html', context=context)
+
+    return redirect('login')
 
 
 def login(request):
@@ -94,7 +114,7 @@ def handle_added_comment(request):
         comment = request.POST.get('comment', '')
         post_id = request.POST.get('post_id', '')
 
-        comment_obj = models.Comment(
+        comment_obj = models.PostComment(
             username=request.user,
             post_id=post_id,
             description=comment
@@ -116,14 +136,14 @@ def handle_added_like(request):
         post_obj = models.Post.objects.get(post_id=post_id)
 
         try:
-            like_obj = models.Like.objects.get(post_id=post_id, username=request.user)
+            like_obj = models.PostLike.objects.get(post_id=post_id, username=request.user)
             if not like_obj.liked:
                 post_obj.total_likes += 1
                 post_obj.save()
 
             return redirect('home')
         except:
-            like = models.Like(
+            like = models.PostLike(
                 post_id=post_id,
                 username=request.user,
                 liked=True
@@ -174,3 +194,86 @@ def handle_user_signup(request):
             return redirect('signup')
 
     return redirect('signup')
+
+
+def handle_chat_search(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            receiver = request.POST.get('username', ' ')
+            try:
+                user_obj = User.objects.get(username=receiver)
+                user_obj.save()
+            except:
+
+                return redirect('chat')
+
+            sender = request.user
+            if receiver == sender.username:
+                return redirect('chat')
+
+            try:
+                chat = models.Chat.objects.get(sender=sender.username, receiver=receiver)
+            except:
+                try:
+                    chat = models.Chat.objects.get(sender=receiver, receiver=sender.username)
+                except:
+                    chat = models.Chat(
+                        sender=sender.username,
+                        receiver=receiver
+                    )
+                    chat.save()
+
+            messages = models.ChatMessage.objects.filter(cid=chat.cid)
+            nav = [
+                ['/', 'Pentagon'],
+                ['profile', 'Profile'],
+                ['chat', 'Chat'],
+                ['logout', 'Logout']
+            ]
+            context = {
+                'navs': nav,
+                'user': request.user,
+                'messages': messages,
+                'receiver': receiver,
+                'isreceiver': True
+            }
+
+            return render(request, 'chat.html', context=context)
+
+    return redirect('home')
+
+
+def handle_chat_message(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            sender = request.POST.get('sender', '')
+            receiver = request.POST.get('receiver', '')
+            message = request.POST.get('message', '')
+            try:
+                chat = models.Chat.objects.get(sender=sender, receiver=receiver)
+            except:
+                chat = models.Chat.objects.get(sender=receiver, receiver=sender)
+            chat_message = models.ChatMessage(
+                user=sender,
+                cid=chat.cid,
+                message=message
+            )
+            chat_message.save()
+            messages = models.ChatMessage.objects.filter(cid=chat.cid)
+            nav = [
+                ['/', 'Pentagon'],
+                ['profile', 'Profile'],
+                ['chat', 'Chat'],
+                ['logout', 'Logout']
+            ]
+            context = {
+                'navs': nav,
+                'user': request.user,
+                'messages': messages,
+                'receiver': receiver,
+                'isreceiver': True
+            }
+
+            return render(request, 'chat.html', context=context)
+
+    return redirect('home')

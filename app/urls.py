@@ -14,4 +14,6 @@ urlpatterns = [
     path('handle_added_like', views.handle_added_like, name='handle_added_like'),
     path('handle_user_login', views.handle_user_login, name='handle_user_login'),
     path('handle_user_signup', views.handle_user_signup, name='handle_user_signup'),
+    path('handle_chat_search', views.handle_chat_search, name='handle_chat_search'),
+    path('handle_chat_message', views.handle_chat_message, name='handle_chat_message')
 ]

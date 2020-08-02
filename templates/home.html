@@ -63,7 +63,7 @@
                                 <input type="text" class="form-control px-4" hidden value="{{post.post_id}}" name="post_id">
                                 <button type="submit" class="btn btn-secondary my-1 px-4"> Add Comment </button>
                             </form>
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-end" id="comment_button">
                                 <i class="far fa-comment"></i>
                                 <span class="badge badge-secondary badge-pill">
                                     {{ post.total_comments }}
@@ -72,21 +72,23 @@
                         </li>
 
                     </ul>
-                    {% for comment in comments %}
-                    <!-- Comments -->
-                    <div class="d-flex justify-content-center" id="comments">
-                        {% if comment.post_id == post.post_id %}
-                        <div class="card" style="width:50rem;">
-                            <div class="card-body">
-                                <div class="">
-                                    <b>{{ comment.username }}</b>
-                                    {{ comment.description }}
+                    <div id="comments" hidden>
+                        {% for comment in comments %}
+                        <!-- Comments -->
+                        <div class="d-flex justify-content-center" id="comments">
+                            {% if comment.post_id == post.post_id %}
+                            <div class="card" style="width:50rem;">
+                                <div class="card-body">
+                                    <div class="">
+                                        <b>{{ comment.username }}</b>
+                                        {{ comment.description }}
+                                    </div>
                                 </div>
                             </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
+                        {% endfor %}
                     </div>
-                    {% endfor %}
 
                 </div>
             </div>
@@ -94,11 +96,8 @@
 
     </div>
     {% endfor %}
-
-
-
-
-
+    {% load static %}
+    <script src="{% static 'master.js' %}"></script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

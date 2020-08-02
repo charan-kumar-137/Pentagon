@@ -5,6 +5,10 @@ from . import models
 
 admin.site.register(models.Post)
 
-admin.site.register(models.Comment)
+admin.site.register(models.PostComment)
 
-admin.site.register(models.Like)
+admin.site.register(models.PostLike)
+
+admin.site.register(models.Chat)
+
+admin.site.register(models.ChatMessage)

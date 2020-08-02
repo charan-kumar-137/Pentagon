@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    <title>Pentagon | {{ user }}</title>
+</head>
+
+<body>
+
+    <div class="container my-2">
+        <!-- Navbar  -->
+        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
+            {% for href,nav in navs %}
+            <a class="navbar-brand" href="{{ href }}">{{ nav }}</a>
+            {% endfor %}
+        </nav>
+    </div>
+
+    <div class="container my-4">
+        <div class="d-flex justify-content-center">
+            <div class="card border border-dark text-center py-2" style="width:50rem">
+                <!-- Search user name -->
+                <form class="form-inline" action="handle_chat_search" method="post">{% csrf_token %}
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" name="username" placeholder="username" required>
+                    </div>
+                    <button type="submit" class="btn btn-secondary mb-2">Search</button>
+                </form>
+                {% if isreceiver %}
+                <hr>
+
+                <!-- Receiver -->
+                <b>{{receiver}}</b>
+                <hr>
+
+                <!-- Messages -->
+                {% for message in messages %}
+                    <div>
+                        <b>{{message.user}} - </b>{{message.message}}
+                    </div>
+                {% endfor %}
+                <hr>
+                <!-- Send Message -->
+                <form class="form-inline" action="handle_chat_message" method="post">{% csrf_token %}
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" name="sender" value="{{user}}" hidden>
+                        <input type="text" name="receiver" value="{{receiver}}" hidden>
+                        <input type="text" class="form-control" name="message" placeholder="message" required>
+                    </div>
+                    <button type="submit" class="btn btn-secondary mb-2">Send</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>
