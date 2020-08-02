@@ -28,13 +28,21 @@
         <div class="d-flex justify-content-center">
             <div class="card border border-dark text-center py-2" style="width:50rem">
                 <!-- Search user name -->
+                {% if not isreceiver %}
                 <form class="form-inline" action="handle_chat_search" method="post">{% csrf_token %}
                     <div class="form-group mx-sm-3 mb-2">
                         <input type="text" class="form-control" name="username" placeholder="username" required>
                     </div>
                     <button type="submit" class="btn btn-secondary mb-2">Search</button>
                 </form>
+                {% endif %}
                 {% if isreceiver %}
+                <form class="form-inline" action="handle_chat_search" method="post">{% csrf_token %}
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" name="username" value="{{receiver}}" hidden>
+                    </div>
+                    <button type="submit" class="btn btn-secondary mb-2">Refresh</button>
+                </form>
                 <hr>
 
                 <!-- Receiver -->
