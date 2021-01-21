@@ -1,68 +1,64 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-    <title>Pentagon | Signup</title>
-</head>
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'main.css' %}">
+		<title>Pentagon | Signup</title>
+	</head>
 
-<body>
+	<body class="background-color">
 
-    <div class="container my-2">
-        <!-- Navbar  -->
-        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
-            {% for href,nav in navs %}
-            <a class="navbar-brand" href="{{ href }}">{{ nav }}</a>
-            {% endfor %}
-        </nav>
-    </div>
+		<!-- Navbar  -->
+		<nav class="navbar navbar-expand-lg text-color">
+			{% for href,nav in navs %}
+			<a class="navbar-brand px-2" href="{{ href }}">{{ nav }}</a>
+			{% endfor %}
+		</nav>
 
-    <!-- Signup Form -->
-    <div class="container">
-        <div class="d-flex justify-content-center my-4">
-            <div class="card px-4 py-4 border border-dark" style="width:50rem;">
-                <form action="handle_user_signup" method="post">{% csrf_token %}
-                    <div class="text-center py-2 h1 card-title">
-                        Create your Account
-                    </div>
-                    <div class="form-group border border-secondary">
-                        <input class="form-control form-control-lg" type="text" placeholder="Choose your Username" name="username" required>
-                    </div>
-                    <div class="form-group border border-secondary">
-                        <input class="form-control form-control-lg" type="text" placeholder="Type your Name" name="name" required>
-                    </div>
-                    <div class="form-group border border-secondary">
-                        <input class="form-control form-control-lg" type="email" placeholder="Type your Email" name="email" required>
-                    </div>
-                    <div class="form-group border border-secondary">
-                        <input class="form-control form-control-lg" type="password" placeholder="Choose your Password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-secondary">Signup</button>
-                    <div class="text-center">
-                        Have an account ? Then <a href="login">Login</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+		<!-- Signup Form -->
+		<div class="container">
+			<div class="d-flex justify-content-center my-4">
+				<div class="card px-4 py-4 secondary-background-color text-color element-border" style="width:50rem;">
+					<form action="handle_user_signup" method="post">{% csrf_token %}
+						<div class="text-center py-2 h1 card-title">
+							Create your Account
+						</div>
+						<div class="form-group border border-secondary">
+							<input class="form-control form-control-lg form-input-box" type="text" placeholder="Choose your Username" name="username" required>
+						</div>
+						<div class="form-group border border-secondary">
+							<input class="form-control form-control-lg form-input-box" type="text" placeholder="Type your Name" name="name" required>
+						</div>
+						<div class="form-group border border-secondary">
+							<input class="form-control form-control-lg form-input-box" type="email" placeholder="Type your Email" name="email" required>
+						</div>
+						<div class="form-group border border-secondary">
+							<input class="form-control form-control-lg form-input-box" type="password" placeholder="Choose your Password" name="password" required>
+						</div>
+						<button type="submit" class="form-button">Signup</button>
+						<div class="text-center">
+							Have an account ? Then <a href="login">Login</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 
 
 
 
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-</body>
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	</body>
 
 </html>

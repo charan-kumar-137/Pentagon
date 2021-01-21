@@ -1,58 +1,54 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-    <title>Pentagon | Add Post</title>
-</head>
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'main.css' %}">
+		<title>Pentagon | Add Post</title>
+	</head>
 
-<body>
+	<body class="background-color">
 
-    <div class="container my-2">
-        <!-- Navbar  -->
-        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
-            {% for href,nav in navs %}
-            <a class="navbar-brand" href="{{ href }}">{{ nav }}</a>
-            {% endfor %}
-        </nav>
-    </div>
+		<!-- Navbar  -->
+		<nav class="navbar navbar-expand-lg text-color">
+			{% for href,nav in navs %}
+			<a class="navbar-brand px-2" href="{{ href }}">{{ nav }}</a>
+			{% endfor %}
+		</nav>
 
-    <!-- Add Post Form -->
-    <div class="container">
-        <div class="d-flex justify-content-center my-4">
-            <div class="card px-4 py-4 border border-dark" style="width:50rem;">
-                <form action="handle_added_post" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <div class="form-group">
-                        <label>Upload Your Pic</label>
-                        <input type="file" accept="image/*" class="form-control-file border border-secondary" name="image" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea class="form-control border border-secondary" rows="3" name="description"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-secondary">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
+		<!-- Add Post Form -->
+		<div class="container">
+			<div class="d-flex justify-content-center my-4 text-color">
+				<div class="px-4 py-4 element-border secondary-background-color" style="width:50rem;">
+					<form action="handle_added_post" method="post" enctype="multipart/form-data">{% csrf_token %}
+						<div class="form-group">
+							<label for="file">Upload Your Pic</label>
+							<input type="file" id="file" accept="image/*" class="form-control-file" name="image" required>
+						</div>
+						<div class="form-group">
+							<label>Description</label>
+							<textarea class="form-control form-input-box" rows="3" name="description"></textarea>
+						</div>
+						<button type="submit" class="form-button">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
 
 
 
 
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-</body>
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	</body>
 
 </html>

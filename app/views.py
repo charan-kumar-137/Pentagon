@@ -15,8 +15,9 @@ def home(request):
         nav = [
             ['/', 'Pentagon'],
             ['profile', 'Profile'],
+            ['add_post', 'Post'],
             ['chat', 'Chat'],
-            ['logout', 'Logout']
+            ['logout', 'Logout'],
         ]
         context = {'posts': post, 'comments': comments, 'navs': nav, 'user': request.user}
         return render(request, 'home.html', context=context)
@@ -29,10 +30,12 @@ def profile(request):
         nav = [
             ['/', 'Pentagon'],
             ['profile', 'Profile'],
+            ['add_post', 'Post'],
             ['chat', 'Chat'],
-            ['logout', 'Logout']
+            ['logout', 'Logout'],
         ]
-        context = {'navs': nav, 'user': request.user}
+        user = models.User.objects.get(username=request.user)
+        context = {'navs': nav, 'user': user}
         return render(request, 'profile.html', context=context)
 
     return redirect('login')
@@ -43,8 +46,9 @@ def chat(request):
         nav = [
             ['/', 'Pentagon'],
             ['profile', 'Profile'],
+            ['add_post', 'Post'],
             ['chat', 'Chat'],
-            ['logout', 'Logout']
+            ['logout', 'Logout'],
         ]
         context = {'navs': nav, 'user': request.user}
         return render(request, 'chat.html', context=context)
@@ -85,7 +89,8 @@ def add_post(request):
         nav = [
             ['/', 'Pentagon'],
             ['profile', 'Profile'],
-            ['chat', 'Chat']
+            ['chat', 'Chat'],
+            ['add_post', 'Post'],
         ]
         return render(request, 'add_post.html', context={'navs': nav})
 
@@ -103,6 +108,10 @@ def handle_added_post(request):
             description=description
         )
         post.save()
+
+        user = models.User.objects.get(username=request.user)
+        user.total_posts += 1
+        user.save()
 
         return redirect('/')
 
@@ -125,6 +134,10 @@ def handle_added_comment(request):
         post.total_comments += 1
         post.save()
 
+        user = models.User.objects.get(username=request.user)
+        user.total_comments += 1
+        user.save()
+
         return redirect('home')
 
     return redirect('home')
@@ -141,6 +154,10 @@ def handle_added_like(request):
                 post_obj.total_likes += 1
                 post_obj.save()
 
+                user = models.User.objects.get(username=request.user)
+                user.total_likes += 1
+                user.save()
+
             return redirect('home')
         except:
             like = models.PostLike(
@@ -152,6 +169,11 @@ def handle_added_like(request):
 
             post_obj.total_likes += 1
             post_obj.save()
+
+            user = models.User.objects.get(username=request.user)
+            user.total_likes += 1
+            user.save()
+
             return redirect('home')
 
     return redirect('home')
@@ -186,6 +208,13 @@ def handle_user_signup(request):
             )
             user.first_name = name
             user.save()
+
+            user_info = models.User(
+                username=username,
+                name=name,
+                email=email
+            )
+            user_info.save()
 
             user = djauth.authenticate(request, username=username, password=password)
             djauth.login(request, user=user)
@@ -227,6 +256,7 @@ def handle_chat_search(request):
             nav = [
                 ['/', 'Pentagon'],
                 ['profile', 'Profile'],
+                ['add_post', 'Post'],
                 ['chat', 'Chat'],
                 ['logout', 'Logout']
             ]
@@ -263,8 +293,9 @@ def handle_chat_message(request):
             nav = [
                 ['/', 'Pentagon'],
                 ['profile', 'Profile'],
+                ['add_post', 'Post'],
                 ['chat', 'Chat'],
-                ['logout', 'Logout']
+                ['logout', 'Logout'],
             ]
             context = {
                 'navs': nav,

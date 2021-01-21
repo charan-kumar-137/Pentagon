@@ -37,8 +37,8 @@ class PostLike(models.Model):
 
 class Chat(models.Model):
     cid = models.AutoField(primary_key=True)
-    sender = models.CharField(max_length=30,unique=True)
-    receiver = models.CharField(max_length=30,unique=True)
+    sender = models.CharField(max_length=30, unique=True)
+    receiver = models.CharField(max_length=30, unique=True)
     total_messages = models.IntegerField(default=0)
 
     def __int__(self):
@@ -53,3 +53,16 @@ class ChatMessage(models.Model):
 
     def __int__(self):
         return self.cmid
+
+
+class User(models.Model):
+    uid = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    email = models.CharField(max_length=50)
+    total_likes = models.IntegerField(default=0)
+    total_comments = models.IntegerField(default=0)
+    total_posts = models.IntegerField(default=0)
+
+    def __int__(self):
+        return self.uid

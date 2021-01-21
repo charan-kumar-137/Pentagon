@@ -1,108 +1,129 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-    <title>Pentagon | {{ user }}</title>
-</head>
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'main.css' %}">
+		<title>Pentagon | {{ user }}</title>
+	</head>
 
-<body>
+	<body class="background-color">
 
-    <div class="container my-2">
-        <!-- Navbar  -->
-        <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-light border border-dark">
-            {% for href,nav in navs %}
-            <a class="navbar-brand" href="{{ href }}">{{ nav }}</a>
-            {% endfor %}
-        </nav>
-    </div>
+		<!-- Navbar  -->
+		<nav class="navbar navbar-expand-lg text-color">
+			{% for href,nav in navs %}
+			<a class="navbar-brand px-2" href="{{ href }}">{{ nav }}</a>
+			{% endfor %}
+		</nav>
 
-    <!-- Add Post -->
-    <div class="d-flex justify-content-center my-4">
-        <div class="card text-center bg-secondary border border-dark" style="width:50rem; height:2rem;">
-            <a class="text-light" href="add_post">Add Post</a>
-        </div>
-    </div>
 
-    {% for post in posts %}
-    <!-- Post -->
-    <div class="container my-4">
-        <div class="d-flex justify-content-center">
-            <!-- Card for displaying image,description -->
-            <div class="card border border-dark" style="width:50rem">
-                <img src="{{ post.image.url }}" class="card-img-top" height="400" alt="Error occured">
-                <div class="card-body">
-                    <div class="card-title"><b>{{ post.username }}</b></div>
-                    <p>{{ post.description }}</p>
 
-                    <ul class="list-group">
+		<!-- Post -->
+		<div class="container-fluid my-4">
+			<div class="row">
+				{% for post in posts %}
 
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <form action="handle_added_like" class="form-inline px-4" method="post"> {% csrf_token %}
-                                <input type="text" name="post_id" hidden value="{{post.post_id}}">
-                                <button type="submit" class="btn btn-secondary my-1 px-4"> Add Like </button>
-                            </form>
-                            <div class="d-flex justify-content-end ">
-                                <i class="far fa-thumbs-up"></i>
-                                <span class="badge badge-secondary badge-pill">
-                                    {{ post.total_likes }}
-                                </span>
-                            </div>
-                        </li>
+				<!-- Card for displaying image,description -->
+				<div class="col-sm my-4  mx-2 py-2">
+					<div class="card w-100 element-border">
 
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <form class="form-inline px-4" action="handle_added_comment" method="post">{% csrf_token %}
-                                <input type="text" class="form-control px-4 border border-secondary" placeholder="Type your comment" name="comment">
-                                <input type="text" class="form-control px-4" hidden value="{{post.post_id}}" name="post_id">
-                                <button type="submit" class="btn btn-secondary my-1 px-4"> Add Comment </button>
-                            </form>
-                            <div class="d-flex justify-content-end" id="comment_button">
-                                <i class="far fa-comment"></i>
-                                <span class="badge badge-secondary badge-pill">
-                                    {{ post.total_comments }}
-                                </span>
-                            </div>
-                        </li>
+						<a href="#post-object-{{post.post_id}}" data-toggle="modal">
+							<img src="{{ post.image.url }}" class="w-100" alt="Error occured">
+						</a>
 
-                    </ul>
-                    <div id="comments" hidden>
-                        {% for comment in comments %}
-                        <!-- Comments -->
-                        <div class="d-flex justify-content-center" id="comments">
-                            {% if comment.post_id == post.post_id %}
-                            <div class="card" style="width:50rem;">
-                                <div class="card-body">
-                                    <div class="">
-                                        <b>{{ comment.username }}</b>
-                                        {{ comment.description }}
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                    </div>
+						<!-- Modal -->
+						<div class="modal fade" id="post-object-{{post.post_id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							<div class="modal-dialog modal-xl">
+								<div class="modal-content text-color secondary-background-color">
+									<div class="modal-header">
+										<h5 class="modal-title" id="staticBackdropLabel">{{post.username}}</h5>
+										<button type="button" class="close form-button" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<!-- post body start -->
+										<img src="{{ post.image.url }}" class="img-responsive w-100" alt="Error occured">
+										<div class="card-body" id="post-body-{{post.post_id}}">
+											<p class=""> {{ post.description }}</p>
 
-                </div>
-            </div>
-        </div>
+											<ul class="list-group">
 
-    </div>
-    {% endfor %}
-    {% load static %}
-    <script src="{% static 'master.js' %}"></script>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-</body>
+												<li class="list-group-item d-flex justify-content-between align-items-center secondary-background-color">
+													<form action="handle_added_like" class="form-inline px-4" method="post"> {% csrf_token %}
+														<input type="text" name="post_id" hidden value="{{post.post_id}}">
+														<button type="submit" class="form-button my-1 px-4"> Add Like </button>
+													</form>
+													<div class="d-flex justify-content-end ">
+														<div>Total Likes: </div>
+														<span>
+															{{ post.total_likes }}
+														</span>
+													</div>
+												</li>
+
+												<li class="list-group-item d-flex justify-content-between align-items-center secondary-background-color">
+													<form class="form-inline px-4" action="handle_added_comment" method="post">{% csrf_token %}
+														<input type="text" class="form-control px-4 form-input-box" placeholder="Type your comment" required name="comment">
+														<input type="text" class="form-control px-4" hidden value="{{post.post_id}}" name="post_id">
+														<button type="submit" class="form-button my-1 px-4"> Add Comment </button>
+													</form>
+													<div class="d-flex justify-content-end" onclick="showComments('comments-{{post.post_id}}')">
+														<div>Total Comments: </div>
+														<span>
+															{{ post.total_comments }}
+														</span>
+													</div>
+												</li>
+
+											</ul>
+											<div id="comments-{{post.post_id}}" hidden>
+												{% for comment in comments %}
+												<!-- Comments -->
+												<div class="px-2">
+													{% if comment.post_id == post.post_id %}
+													<div>
+														<b>{{comment.username}}</b> -
+														{{comment.description}}
+													</div>
+													{% endif %}
+												</div>
+												{% endfor %}
+											</div>
+
+										</div>
+										<!-- post body end -->
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+
+				{% if post.post_id|divisibleby:"2" %}
+				<!-- <div class="w-100"></div> -->
+			</div>
+			<div class="row">
+				{% endif %}
+
+				{% endfor %}
+			</div>
+		</div>
+
+		{% load static %}
+		<script src="{% static 'master.js' %}"></script>
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	</body>
 
 </html>
