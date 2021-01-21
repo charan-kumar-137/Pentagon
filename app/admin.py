@@ -12,3 +12,5 @@ admin.site.register(models.PostLike)
 admin.site.register(models.Chat)
 
 admin.site.register(models.ChatMessage)
+
+admin.site.register(models.User)
