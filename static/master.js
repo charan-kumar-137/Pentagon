@@ -12,16 +12,3 @@ function showComments(comment_id){
 
 }
 
-function showPostBody(post_id){
-	const post_button = document.getElementById(post_id);
-	hidden = document.getElementById(post_id).hidden;
-	if (hidden == true){
-		document.getElementById(post_id).hidden = false;
-		hidden = false;
-	}
-	else {
-		document.getElementById(post_id).hidden = true;
-		hidden = true;
-	}
-
-}
