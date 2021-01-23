@@ -6,7 +6,7 @@ from django.db import models
 class Post(models.Model):
     post_id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='post')
-    username = models.CharField(max_length=30)
+    uid = models.IntegerField()
     description = models.TextField()
     total_likes = models.IntegerField(default=0)
     total_comments = models.IntegerField(default=0)
@@ -17,7 +17,7 @@ class Post(models.Model):
 
 class PostComment(models.Model):
     comment_id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=30)
+    uid = models.IntegerField()
     post_id = models.IntegerField()
     description = models.TextField()
 
@@ -28,7 +28,7 @@ class PostComment(models.Model):
 class PostLike(models.Model):
     like_id = models.AutoField(primary_key=True)
     post_id = models.IntegerField()
-    username = models.CharField(max_length=30)
+    uid = models.IntegerField()
     liked = models.BooleanField(default=False)
 
     def __int__(self):
@@ -37,8 +37,8 @@ class PostLike(models.Model):
 
 class Chat(models.Model):
     cid = models.AutoField(primary_key=True)
-    sender = models.CharField(max_length=30, unique=True)
-    receiver = models.CharField(max_length=30, unique=True)
+    sender_uid = models.IntegerField()
+    receiver_uid = models.IntegerField()
     total_messages = models.IntegerField(default=0)
 
     def __int__(self):
@@ -48,7 +48,7 @@ class Chat(models.Model):
 class ChatMessage(models.Model):
     cmid = models.AutoField(primary_key=True)
     cid = models.IntegerField()
-    user = models.CharField(max_length=30)
+    uid = models.IntegerField()
     message = models.TextField()
 
     def __int__(self):

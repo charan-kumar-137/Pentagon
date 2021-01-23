@@ -8,7 +8,7 @@
 		{% load static %}
 		<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 		<link rel="stylesheet" href="{% static 'main.css' %}">
-		<title>Pentagon | {{ user }}</title>
+		<title>Pentagon | {{ user.username }}</title>
 	</head>
 
 	<body class="background-color">
@@ -35,20 +35,20 @@
 					{% if isreceiver %}
 					<form class="form-inline" action="handle_chat_search" method="post">{% csrf_token %}
 						<div class="form-group mx-sm-3 mb-2">
-							<input type="text" class="form-control" name="username" value="{{receiver}}" hidden>
+							<input type="text" class="form-control" name="username" value="{{receiver.username}}" hidden>
 						</div>
 						<button type="submit" class="form-button mb-2">Refresh</button>
 					</form>
 					<hr>
 
 					<!-- Receiver -->
-					<b class="text-center">{{receiver}} -&gt; </b>
+					<b class="text-center">{{receiver.username}} -&gt; </b>
 					<hr>
 
 					<!-- Messages -->
 					{% for message in messages %}
 					<div>
-						{% if message.user|stringformat:"s" == user|stringformat:"s" %}
+						{% if message.uid == user.uid %}
 						<b> &lt;- </b> {{message.message}}
 						{% else %}
 						<b> -&gt; </b>{{message.message}}
@@ -59,8 +59,8 @@
 					<!-- Send Message -->
 					<form class="form-inline" action="handle_chat_message" method="post">{% csrf_token %}
 						<div class="form-group mx-sm-3 mb-2">
-							<input type="text" name="sender" value="{{user}}" hidden>
-							<input type="text" name="receiver" value="{{receiver}}" hidden>
+							<input type="text" name="sender" value="{{user.username}}" hidden>
+							<input type="text" name="receiver" value="{{receiver.username}}" hidden>
 							<input type="text" class="form-control form-input-box" name="message" placeholder="message" required>
 						</div>
 						<button type="submit" class="form-button mb-2">Send</button>

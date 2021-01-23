@@ -19,7 +19,9 @@ def home(request):
             ['chat', 'Chat'],
             ['logout', 'Logout'],
         ]
-        context = {'posts': post, 'comments': comments, 'navs': nav, 'user': request.user}
+        user = models.User.objects.get(username=request.user)
+        users = models.User.objects.all()
+        context = {'posts': post, 'comments': comments, 'navs': nav, 'user': user, 'users': users}
         return render(request, 'home.html', context=context)
 
     return redirect('login')
@@ -50,7 +52,8 @@ def chat(request):
             ['chat', 'Chat'],
             ['logout', 'Logout'],
         ]
-        context = {'navs': nav, 'user': request.user}
+        user = models.User.objects.get(username=request.user)
+        context = {'navs': nav, 'user': user}
         return render(request, 'chat.html', context=context)
 
     return redirect('login')
@@ -101,15 +104,14 @@ def handle_added_post(request):
     if request.method == 'POST':
         image = request.FILES.get('image', '')
         description = request.POST.get('description', '')
-
+        user = models.User.objects.get(username=request.user)
         post = models.Post(
             image=image,
-            username=request.user,
+            uid=user.uid,
             description=description
         )
         post.save()
 
-        user = models.User.objects.get(username=request.user)
         user.total_posts += 1
         user.save()
 
@@ -122,9 +124,9 @@ def handle_added_comment(request):
     if request.method == 'POST':
         comment = request.POST.get('comment', '')
         post_id = request.POST.get('post_id', '')
-
+        user = models.User.objects.get(username=request.user)
         comment_obj = models.PostComment(
-            username=request.user,
+            uid=user.uid,
             post_id=post_id,
             description=comment
         )
@@ -134,7 +136,6 @@ def handle_added_comment(request):
         post.total_comments += 1
         post.save()
 
-        user = models.User.objects.get(username=request.user)
         user.total_comments += 1
         user.save()
 
@@ -147,14 +148,13 @@ def handle_added_like(request):
     if request.method == 'POST':
         post_id = request.POST.get('post_id')
         post_obj = models.Post.objects.get(post_id=post_id)
-
+        user = models.User.objects.get(username=request.user)
         try:
-            like_obj = models.PostLike.objects.get(post_id=post_id, username=request.user)
+            like_obj = models.PostLike.objects.get(post_id=post_id, uid=user.uid)
             if not like_obj.liked:
                 post_obj.total_likes += 1
                 post_obj.save()
 
-                user = models.User.objects.get(username=request.user)
                 user.total_likes += 1
                 user.save()
 
@@ -162,7 +162,7 @@ def handle_added_like(request):
         except:
             like = models.PostLike(
                 post_id=post_id,
-                username=request.user,
+                uid=user.uid,
                 liked=True
             )
             like.save()
@@ -170,7 +170,6 @@ def handle_added_like(request):
             post_obj.total_likes += 1
             post_obj.save()
 
-            user = models.User.objects.get(username=request.user)
             user.total_likes += 1
             user.save()
 
@@ -228,27 +227,25 @@ def handle_user_signup(request):
 def handle_chat_search(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            receiver = request.POST.get('username', ' ')
+            receiver_value = request.POST.get('username', ' ')
             try:
-                user_obj = User.objects.get(username=receiver)
-                user_obj.save()
+                receiver = models.User.objects.get(username=receiver_value)
             except:
-
                 return redirect('chat')
 
-            sender = request.user
-            if receiver == sender.username:
+            sender = models.User.objects.get(username=request.user)
+            if receiver.uid == sender.uid:
                 return redirect('chat')
 
             try:
-                chat = models.Chat.objects.get(sender=sender.username, receiver=receiver)
+                chat = models.Chat.objects.get(sender_uid=sender.uid, receiver_uid=receiver.uid)
             except:
                 try:
-                    chat = models.Chat.objects.get(sender=receiver, receiver=sender.username)
+                    chat = models.Chat.objects.get(sender_uid=receiver.uid, receiver_uid=sender.uid)
                 except:
                     chat = models.Chat(
-                        sender=sender.username,
-                        receiver=receiver
+                        sender_uid=sender.uid,
+                        receiver_uid=receiver.uid
                     )
                     chat.save()
 
@@ -262,7 +259,7 @@ def handle_chat_search(request):
             ]
             context = {
                 'navs': nav,
-                'user': request.user,
+                'user': sender,
                 'messages': messages,
                 'receiver': receiver,
                 'isreceiver': True
@@ -276,15 +273,17 @@ def handle_chat_search(request):
 def handle_chat_message(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            sender = request.POST.get('sender', '')
-            receiver = request.POST.get('receiver', '')
+            sender_value = request.POST.get('sender', '')
+            receiver_value = request.POST.get('receiver', '')
             message = request.POST.get('message', '')
+            sender = models.User.objects.get(username=sender_value)
+            receiver = models.User.objects.get(username=receiver_value)
             try:
-                chat = models.Chat.objects.get(sender=sender, receiver=receiver)
+                chat = models.Chat.objects.get(sender_uid=sender.uid, receiver_uid=receiver.uid)
             except:
-                chat = models.Chat.objects.get(sender=receiver, receiver=sender)
+                chat = models.Chat.objects.get(sender_uid=receiver.uid, receiver_uid=sender.uid)
             chat_message = models.ChatMessage(
-                user=sender,
+                uid=sender.uid,
                 cid=chat.cid,
                 message=message
             )
@@ -299,7 +298,7 @@ def handle_chat_message(request):
             ]
             context = {
                 'navs': nav,
-                'user': request.user,
+                'user': sender,
                 'messages': messages,
                 'receiver': receiver,
                 'isreceiver': True

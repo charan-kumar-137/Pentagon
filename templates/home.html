@@ -8,7 +8,7 @@
 		{% load static %}
 		<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 		<link rel="stylesheet" href="{% static 'main.css' %}">
-		<title>Pentagon | {{ user }}</title>
+		<title>Pentagon | {{ user.username }}</title>
 	</head>
 
 	<body class="background-color">
@@ -40,7 +40,13 @@
 							<div class="modal-dialog modal-xl">
 								<div class="modal-content text-color secondary-background-color">
 									<div class="modal-header">
-										<h5 class="modal-title" id="staticBackdropLabel">{{post.username}}</h5>
+										{% for user in users %}
+										<h5 class="modal-title" id="staticBackdropLabel">
+											{% if post.uid == user.uid %}
+											{{user.username}}
+											{% endif %}
+										</h5>
+										{% endfor %}
 										<button type="button" class="close form-button" data-dismiss="modal" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
@@ -87,7 +93,14 @@
 												<div class="px-2">
 													{% if comment.post_id == post.post_id %}
 													<div>
-														<b>{{comment.username}}</b> -
+														{% for user in users %}
+														<b>
+															{% if comment.uid == user.uid %}
+															{{user.username}}
+															{% endif%}
+														</b>
+														{% endfor  %}
+														-
 														{{comment.description}}
 													</div>
 													{% endif %}
